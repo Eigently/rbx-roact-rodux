@@ -7,19 +7,19 @@
 import path = require("path");
 import fs = require("fs-extra");
 
-const libDir = path.join(process.cwd(), "roact-rodux", "lib");
+const srcDir = path.join(process.cwd(), "roact-rodux", "src");
 
 function replaceRoactRequire(text: string) {
 	text = text.replace(
 		/^local Roact = require\([\w\.]+\.Roact\)/gi,
-		`local RoactModule = assert(script.Parent.Parent.Parent:FindFirstChild("roact"), "@rbxts/roact not found, is it installed?")\n` +
-			`local Roact = require(RoactModule.roact.src)`,
+		`local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))\n` +
+		`local Roact = TS.import(script, TS.getModule(script, "roact").roact.src)`
 	);
 
 	return text;
 }
 
-fs.readdir(libDir, (err, files) => {
+fs.readdir(srcDir, (err, files) => {
 	fs.ensureDirSync(path.join(process.cwd(), "out"));
 
 	if (err) {
@@ -31,13 +31,13 @@ fs.readdir(libDir, (err, files) => {
 			console.log("replace", matched);
 
 			let text = replaceRoactRequire(
-				fs.readFileSync(path.join(libDir, matched)).toString(),
+				fs.readFileSync(path.join(srcDir, matched)).toString(),
 			);
 
 			fs.writeFileSync(path.join(process.cwd(), "out", matched), text);
 		} else {
 			fs.copyFileSync(
-				path.join(libDir, matched),
+				path.join(srcDir, matched),
 				path.join(process.cwd(), "out", matched),
 			);
 		}

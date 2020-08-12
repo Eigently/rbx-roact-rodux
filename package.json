@@ -8,13 +8,9 @@
 	},
 	"keywords": [],
 	"typings": "index.d.ts",
-	"main": "./out/init.lua",
+	"main": "./src/init.lua",
 	"author": "",
 	"license": "ISC",
-	"files": [
-		"out/*",
-		"*.d.ts"
-	],
 	"devDependencies": {},
 	"dependencies": {
 		"@rbxts/roact": "^1.1.1",

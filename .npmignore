@@ -1,3 +1,5 @@
-node_modules
-util
-*.testing.tsx
+*
+!index.d.ts
+!internal.d.ts
+!roact-rodux/src/*.lua
+*.spec.lua
